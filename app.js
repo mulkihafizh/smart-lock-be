@@ -16,6 +16,10 @@ mongoose
     console.log(err);
   });
 
+app.get("/", (req, res) => {
+  res.cookie("test", "testing").send("Hello World");
+});
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
