@@ -4,7 +4,6 @@ const app = express();
 require("dotenv").config();
 
 const bodyParser = require("body-parser");
-const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 mongoose
@@ -16,21 +15,19 @@ mongoose
     console.log(err);
   });
 
-app.get("/", (req, res) => {
-  res.cookie("test", "testing").send("Hello World");
-});
-
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors());
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
 
 const authRoutes = require("./routes/user");
 const doorRoutes = require("./routes/door");
 const historyRoutes = require("./routes/history");
 
-app.use("/api", authRoutes);
-app.use("/api", doorRoutes);
-app.use("/api", historyRoutes);
+app.use("/", authRoutes);
+app.use("/", doorRoutes);
+app.use("/", historyRoutes);
 
 const port = process.env.PORT;
 

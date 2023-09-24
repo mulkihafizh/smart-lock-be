@@ -1,4 +1,26 @@
-const History = require("../models/history");
+// const History = require("../models/history");
+const mongoose = require("mongoose");
+
+const historySchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      maxlength: 32,
+      trim: true,
+      unique: true,
+    },
+    date: {
+      type: Date,
+    },
+    _doorId: {
+      type: mongoose.Schema.Types.ObjectId,
+    },
+  },
+  { timestamps: true }
+);
+
+const History = mongoose.model("History", historySchema);
 
 exports.getHistory = async (req, res) => {
   try {

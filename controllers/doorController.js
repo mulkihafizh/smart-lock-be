@@ -1,6 +1,31 @@
-const Door = require("../models/Door");
-const { validationResult } = require("express-validator");
-const jwt = require("jsonwebtoken");
+// const Door = require("../models/Door");
+const mongoose = require("mongoose");
+
+const doorSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      maxlength: 32,
+      trim: true,
+      unique: true,
+    },
+    key: {
+      type: String,
+      required: true,
+    },
+    _userId: {
+      type: mongoose.Schema.Types.ObjectId,
+    },
+    isLocked: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  { timestamps: true }
+);
+
+const Door = mongoose.model("Door", doorSchema);
 
 exports.createDoor = async (req, res) => {
   try {
