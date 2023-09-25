@@ -11,8 +11,8 @@ const doorSchema = new mongoose.Schema(
       unique: true,
     },
     key: {
-      type: String,
-      required: true,
+      type: Array,
+      default: [],
     },
     _userId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -61,5 +61,22 @@ exports.getOne = async (req, res) => {
     return res.status(200).json(door);
   } catch (e) {
     return res.status(500).json({ error: "Internal server errors" });
+  }
+};
+
+exports.unlockDoor = async (req, res) => {
+  try {
+    const { key, id } = req.body;
+
+    const door = Door.findOne({ _id: id });
+
+    if (door.key.includes(key)) {
+      await Door.findOneAndUpdate({ _id: id }, { isLocked: false });
+      return res.status(200).json({ message: "Door unlocked" });
+    } else {
+      return res.status(400).json({ error: "Wrong key" });
+    }
+  } catch (e) {
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
