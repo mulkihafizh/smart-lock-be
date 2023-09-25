@@ -68,10 +68,9 @@ exports.unlockDoor = async (req, res) => {
   try {
     const { key, id } = req.body;
 
-    const door = Door.findOne({ _id: id });
+    const door = await Door.findOne({ _id: id });
 
     if (door.key.includes(key)) {
-      await Door.findOneAndUpdate({ _id: id }, { isLocked: false });
       return res.status(200).json({ message: "Door unlocked" });
     } else {
       return res.status(400).json({ error: "Wrong key" });
