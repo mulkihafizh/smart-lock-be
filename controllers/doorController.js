@@ -79,3 +79,18 @@ exports.unlockDoor = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+exports.lockDoor = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const door = await Door.findOneAndUpdate(
+      { _id: id },
+      { isLocked: true },
+      { new: true }
+    );
+
+    return res.status(200).json({ message: "Door locked" });
+  } catch (e) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
